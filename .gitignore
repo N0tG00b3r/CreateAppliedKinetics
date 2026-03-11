@@ -2,6 +2,6 @@ run/
 build/
 .idea/
 .gradle/
+.vs/
 
 Icon*
-/.vs/MeProxy/FileContentIndex
