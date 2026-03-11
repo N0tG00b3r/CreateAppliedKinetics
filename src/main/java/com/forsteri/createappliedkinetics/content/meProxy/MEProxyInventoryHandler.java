@@ -37,10 +37,12 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public FluidStack getFluidInTank(int tank) {
-        if (tank >= getFluidKeys().size())
+        // JEEEEEEEEEZUS CHRISTO was this dev on crack?????? 3 fucking calls to getFluidKeys(), bro please fix your mod --Alina
+        List<AEFluidKey> fluidKeys = getFluidKeys();
+        if (tank >= fluidKeys.size())
             return FluidStack.EMPTY;
 
-        return getFluidKeys().get(tank).toStack(((int) storage.extract(getFluidKeys().get(tank), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
+        return fluidKeys.get(tank).toStack(((int) storage.extract(fluidKeys.get(tank), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
     }
 
     @Override
@@ -84,6 +86,8 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public ItemStack getStackInSlot(int slot) {
+        // man this function used to suck ass when it made 3 DIFFERENT CALLS to getItemKeys
+        // what was my man Forsteri thinking bro my eyes were bleeding :skull: --Alina
         List<AEItemKey> keysList = getItemKeys()
         if (slot >= keysList.size())
             return ItemStack.EMPTY;
@@ -104,11 +108,13 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        ItemStack stackInSlot = getStackInSlot(slot).copy();
+        ItemStack stackInSlot = getStackInSlot(slot);
+        ItemStack copiedStackInSlot = stackInSlot.copy();
+        // this should be more optimized? only 1 call to getStackInSlot instead of 2, let's hope we don't explode --Alina
 
-        stackInSlot.setCount((int) storage.extract(AEItemKey.of(getStackInSlot(slot)), amount, simulate ? Actionable.SIMULATE : Actionable.MODULATE, IActionSource.empty()));
+        copiedStackInSlot.setCount((int) storage.extract(AEItemKey.of(stackInSlot), amount, simulate ? Actionable.SIMULATE : Actionable.MODULATE, IActionSource.empty()));
 
-        return stackInSlot;
+        return copiedStackInSlot;
     }
 
     @Override
