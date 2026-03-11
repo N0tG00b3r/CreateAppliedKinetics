@@ -16,10 +16,10 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'com.forsteri'
-version = '1.5.1-1.20.1'
+version = '1.5.1-1.20.1-huntress-patch2'
 
 java {
-    archivesBaseName = 'createappliedkinetics'
+    archivesBaseName = 'CreateAppliedKinetics'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
