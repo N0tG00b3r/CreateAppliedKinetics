@@ -2,6 +2,7 @@ package com.forsteri.createappliedkinetics.content.meProxy;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
+import appeng.api.networking.storage.IStorageService;
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;
 import appeng.me.storage.NetworkStorage;
@@ -15,18 +16,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
+    IStorageService service;
     NetworkStorage storage;
 
-    public MEProxyInventoryHandler(NetworkStorage storage) {
-        this.storage = storage;
+    public MEProxyInventoryHandler(IStorageService storageService) {
+        this.service = storageService;
+        this.storage = (NetworkStorage) storageService.getInventory();
     }
 
     List<AEFluidKey> getFluidKeys() {
-        return storage.getAvailableStacks().keySet().stream().filter(aeKey -> aeKey instanceof AEFluidKey).map(aeKey -> ((AEFluidKey) aeKey)).toList();
+        return service.getCachedInventory().keySet().stream().filter(aeKey -> aeKey instanceof AEFluidKey).map(aeKey -> ((AEFluidKey) aeKey)).toList();
     }
 
     List<AEItemKey> getItemKeys() {
-        return storage.getAvailableStacks().keySet().stream().filter(aeKey -> aeKey instanceof AEItemKey).map(aeKey -> ((AEItemKey) aeKey)).toList();
+        return service.getCachedInventory().keySet().stream().filter(aeKey -> aeKey instanceof AEItemKey).map(aeKey -> ((AEItemKey) aeKey)).toList();
     }
 
     @Override
@@ -37,8 +40,8 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public FluidStack getFluidInTank(int tank) {
-        // same changes as 1.18.2 --Alina
-        List<AEFluidKey> fluidKeys = getFluidKeys()
+        // same changes as 1.18.2 (Also actually fixed now) --Alina
+        List<AEFluidKey> fluidKeys = getFluidKeys();
         if (tank >= fluidKeys.size())
             return FluidStack.EMPTY;
 
@@ -94,8 +97,8 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public ItemStack getStackInSlot(int slot) {
-        // same changes as 1.18.2 --Alina
-        List<AEItemKey> itemKeys = getItemKeys()
+        // same changes as 1.18.2 (Also actually fixed now) --Alina
+        List<AEItemKey> itemKeys = getItemKeys();
         if (slot >= itemKeys.size())
             return ItemStack.EMPTY;
 
