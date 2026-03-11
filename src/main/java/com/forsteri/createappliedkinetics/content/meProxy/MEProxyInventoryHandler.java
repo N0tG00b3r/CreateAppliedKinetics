@@ -5,7 +5,7 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;
-import appeng.me.storage.NetworkStorage;
+import appeng.api.storage.MEStorage;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.EmptyFluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,11 +17,11 @@ import java.util.List;
 
 public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     IStorageService service;
-    NetworkStorage storage;
+    MEStorage storage;
 
     public MEProxyInventoryHandler(IStorageService storageService) {
         this.service = storageService;
-        this.storage = (NetworkStorage) storageService.getInventory();
+        this.storage = storageService.getInventory();
     }
 
     List<AEFluidKey> getFluidKeys() {
