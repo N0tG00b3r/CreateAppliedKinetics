@@ -37,10 +37,12 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public FluidStack getFluidInTank(int tank) {
-        if (tank >= getFluidKeys().size())
+        // same changes as 1.18.2 --Alina
+        List<AEFluidKey> fluidKeys = getFluidKeys()
+        if (tank >= fluidKeys.size())
             return FluidStack.EMPTY;
 
-        return getFluidKeys().get(tank).toStack(((int) storage.extract(getFluidKeys().get(tank), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
+        return fluidKeys.get(tank).toStack(((int) storage.extract(fluidKeys.get(tank), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
     }
 
     @Override
@@ -92,10 +94,12 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public ItemStack getStackInSlot(int slot) {
-        if (slot >= getItemKeys().size())
+        // same changes as 1.18.2 --Alina
+        List<AEItemKey> itemKeys = getItemKeys()
+        if (slot >= itemKeys.size())
             return ItemStack.EMPTY;
 
-        return getItemKeys().get(slot).toStack(((int) storage.extract(getItemKeys().get(slot), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
+        return itemKeys.get(slot).toStack(((int) storage.extract(itemKeys.get(slot), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
     }
 
     @NotNull
