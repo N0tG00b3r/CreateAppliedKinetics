@@ -1,0 +1,1 @@
+This fork was made to address severely unoptimized code within Create: Applied Kinetics causing Factory Gauges to massively lag servers whenever attempting to extract items for crafting recipes from particularly large ME storage systems.
