@@ -84,10 +84,11 @@ public class MEProxyInventoryHandler implements IItemHandler, IFluidHandler {
     @NotNull
     @Override
     public ItemStack getStackInSlot(int slot) {
-        if (slot >= getItemKeys().size())
+        List<AEItemKey> keysList = getItemKeys()
+        if (slot >= keysList.size())
             return ItemStack.EMPTY;
 
-        return getItemKeys().get(slot).toStack(((int) storage.extract(getItemKeys().get(slot), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
+        return keysList.get(slot).toStack(((int) storage.extract(keysList.get(slot), Integer.MAX_VALUE, Actionable.SIMULATE, IActionSource.empty())));
     }
 
     @NotNull
